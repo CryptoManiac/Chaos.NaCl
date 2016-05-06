@@ -39,8 +39,8 @@ namespace Chaos.NaCl.Tests
         {
             foreach (var testCase in Ed25519TestVectors.TestCases)
             {
-                var publicKey = new byte[Ed25519.PublicKeySizeInBytes].Pad();
-                var privateKey = new byte[Ed25519.ExpandedPrivateKeySizeInBytes].Pad();
+                var publicKey = new byte[Ed25519.PublicKeySize].Pad();
+                var privateKey = new byte[Ed25519.ExpandedPrivateKeySize].Pad();
                 Ed25519.KeyPairFromSeed(publicKey, privateKey, testCase.Seed.Pad());
                 TestHelpers.AssertEqualBytes(testCase.PublicKey, publicKey.UnPad());
                 TestHelpers.AssertEqualBytes(testCase.PrivateKey, privateKey.UnPad());

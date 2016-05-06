@@ -12,46 +12,6 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 		{
 			FieldElement t0;
 
-			/* qhasm: enter GroupElementadd */
-
-			/* qhasm: fe X1 */
-
-			/* qhasm: fe Y1 */
-
-			/* qhasm: fe Z1 */
-
-			/* qhasm: fe Z2 */
-
-			/* qhasm: fe T1 */
-
-			/* qhasm: fe ZZ */
-
-			/* qhasm: fe YpX2 */
-
-			/* qhasm: fe YmX2 */
-
-			/* qhasm: fe T2d2 */
-
-			/* qhasm: fe X3 */
-
-			/* qhasm: fe Y3 */
-
-			/* qhasm: fe Z3 */
-
-			/* qhasm: fe T3 */
-
-			/* qhasm: fe YpX1 */
-
-			/* qhasm: fe YmX1 */
-
-			/* qhasm: fe A */
-
-			/* qhasm: fe B */
-
-			/* qhasm: fe C */
-
-			/* qhasm: fe D */
-
 			/* qhasm: YpX1 = Y1+X1 */
 			/* asm 1: fe_add(>YpX1=fe#1,<Y1=fe#12,<X1=fe#11); */
 			/* asm 2: fe_add(>YpX1=r.X,<Y1=p.Y,<X1=p.X); */

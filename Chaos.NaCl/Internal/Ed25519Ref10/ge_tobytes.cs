@@ -7,8 +7,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 		public static void ge_tobytes(byte[] s, int offset, ref  GroupElementP2 h)
 		{
 			FieldElement recip;
-			FieldElement x;
-			FieldElement y;
+			FieldElement x, y;
 
 			FieldOperations.fe_invert(out recip, ref h.Z);
 			FieldOperations.fe_mul(out x, ref h.X, ref recip);

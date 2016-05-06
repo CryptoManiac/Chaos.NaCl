@@ -36,20 +36,6 @@ namespace Chaos.NaCl.Tests
         }
 
         [TestMethod]
-        public void Sha512_2()
-        {
-            var sha512Framework = new SHA512Managed();
-            for (int n = 0; n < 1000; n++)
-            {
-                var message = Enumerable.Range(1, n).Select(i => (byte)i).ToArray();
-                var hashExpected = sha512Framework.ComputeHash(message);
-                var hash = Sha512.Hash(message);
-                TestHelpers.AssertEqualBytes(hashExpected, hash);
-            }
-        }
-
-
-        [TestMethod]
         public void Sha512_Split()
         {
             // use only a subset of possible indices to speed up the test
@@ -66,7 +52,7 @@ namespace Chaos.NaCl.Tests
                         hasher.Update(message, 0, k);
                         hasher.Update(message, k, m);
                         hasher.Update(message, k + m, n);
-                        var hash = hasher.Finish();
+                        var hash = hasher.Finalize();
                         TestHelpers.AssertEqualBytes(hashExpected, hash);
                     }
         }
@@ -80,12 +66,12 @@ namespace Chaos.NaCl.Tests
 
             var hasher = new Sha512();
             hasher.Update(message, 0, message.Length);
-            var hash1 = hasher.Finish();
+            var hash1 = hasher.Finalize();
             TestHelpers.AssertEqualBytes(hashExpected, hash1);
 
             hasher.Init();
             hasher.Update(message, 0, message.Length);
-            var hash2 = hasher.Finish();
+            var hash2 = hasher.Finalize();
             TestHelpers.AssertEqualBytes(hashExpected, hash2);
         }
 
@@ -116,7 +102,7 @@ namespace Chaos.NaCl.Tests
             var sha512 = new Sha512();
             sha512.Update(message, 0, message.Length);
             var output = new byte[64].Pad();
-            sha512.Finish(output);
+            sha512.Finalize(output);
             TestHelpers.AssertEqualBytes(hashExpected, output.UnPad());
         }
 
@@ -125,7 +111,7 @@ namespace Chaos.NaCl.Tests
         public void Sha512OutputSegmentsNull()
         {
             var sha512 = new Sha512();
-            sha512.Finish(default(ArraySegment<byte>));
+            sha512.Finalize(default(ArraySegment<byte>));
         }
 
         [TestMethod]
@@ -133,7 +119,7 @@ namespace Chaos.NaCl.Tests
         public void Sha512OutputSegmentsIncorretOutputSize()
         {
             var sha512 = new Sha512();
-            sha512.Finish(new byte[32].Pad());
+            sha512.Finalize(new byte[32].Pad());
         }
 
         [TestMethod]

@@ -77,7 +77,7 @@ namespace Chaos.NaCl.Tests
         [TestMethod]
         public void EncryptSegments()
         {
-            var ciphertextActual = new byte[_plaintext.Length + XSalsa20Poly1305.MacSizeInBytes].Pad();
+            var ciphertextActual = new byte[_plaintext.Length + XSalsa20Poly1305.MacSize].Pad();
             XSalsa20Poly1305.Encrypt(ciphertextActual, _plaintext.Pad(), _key.Pad(), _nonce.Pad());
             TestHelpers.AssertEqualBytes(_ciphertext, ciphertextActual.UnPad());
         }
@@ -92,7 +92,7 @@ namespace Chaos.NaCl.Tests
         [TestMethod]
         public void DecryptSuccessSegments()
         {
-            var plaintextActual = new byte[_ciphertext.Length - XSalsa20Poly1305.MacSizeInBytes].Pad();
+            var plaintextActual = new byte[_ciphertext.Length - XSalsa20Poly1305.MacSize].Pad();
             var success = XSalsa20Poly1305.TryDecrypt(plaintextActual, _ciphertext.Pad(), _key.Pad(), _nonce.Pad());
             Assert.IsTrue(success);
             TestHelpers.AssertEqualBytes(_plaintext, plaintextActual.UnPad());
@@ -113,7 +113,7 @@ namespace Chaos.NaCl.Tests
         {
             foreach (var brokenCiphertext in _ciphertext.WithChangedBit())
             {
-                var plaintextActual = new byte[_ciphertext.Length - XSalsa20Poly1305.MacSizeInBytes].Pad();
+                var plaintextActual = new byte[_ciphertext.Length - XSalsa20Poly1305.MacSize].Pad();
                 for (int i = 0; i < plaintextActual.Count; i++)
                     plaintextActual.Array[plaintextActual.Offset + i] = 0x37;
                 var success = XSalsa20Poly1305.TryDecrypt(plaintextActual, brokenCiphertext.Pad(), _key.Pad(), _nonce.Pad());
@@ -147,7 +147,7 @@ namespace Chaos.NaCl.Tests
             for (int length = 0; length < 1000; length++)
             {
                 var plaintextExpected = Enumerable.Range(0, length).Select(i => (byte)i).ToArray();
-                var ciphertext = new byte[plaintextExpected.Length + XSalsa20Poly1305.MacSizeInBytes].Pad();
+                var ciphertext = new byte[plaintextExpected.Length + XSalsa20Poly1305.MacSize].Pad();
                 var plaintextActual = new byte[plaintextExpected.Length].Pad();
                 XSalsa20Poly1305.Encrypt(ciphertext, plaintextExpected.ToArray().Pad(), _key.Pad(), _nonce.Pad());
                 ciphertext.UnPad();//verify padding

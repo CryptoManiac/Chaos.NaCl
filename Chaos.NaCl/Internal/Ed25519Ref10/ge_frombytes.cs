@@ -6,11 +6,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 	{
 		public static int ge_frombytes_negate_vartime(out GroupElementP3 h, byte[] data, int offset)
 		{
-			FieldElement u;
-			FieldElement v;
-			FieldElement v3;
-			FieldElement vxx;
-			FieldElement check;
+			FieldElement u, v, v3, vxx, check;
 
 			FieldOperations.fe_frombytes(out h.Y, data, offset);
 			FieldOperations.fe_1(out h.Z);

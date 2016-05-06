@@ -18,48 +18,39 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 
 		public static void fe_mul121666(out FieldElement h, ref FieldElement f)
 		{
-			Int32 f0 = f.x0;
-			Int32 f1 = f.x1;
-			Int32 f2 = f.x2;
-			Int32 f3 = f.x3;
-			Int32 f4 = f.x4;
-			Int32 f5 = f.x5;
-			Int32 f6 = f.x6;
-			Int32 f7 = f.x7;
-			Int32 f8 = f.x8;
-			Int32 f9 = f.x9;
-			Int64 h0 = f0 * (Int64)121666;
-			Int64 h1 = f1 * (Int64)121666;
-			Int64 h2 = f2 * (Int64)121666;
-			Int64 h3 = f3 * (Int64)121666;
-			Int64 h4 = f4 * (Int64)121666;
-			Int64 h5 = f5 * (Int64)121666;
-			Int64 h6 = f6 * (Int64)121666;
-			Int64 h7 = f7 * (Int64)121666;
-			Int64 h8 = f8 * (Int64)121666;
-			Int64 h9 = f9 * (Int64)121666;
-			Int64 carry0;
-			Int64 carry1;
-			Int64 carry2;
-			Int64 carry3;
-			Int64 carry4;
-			Int64 carry5;
-			Int64 carry6;
-			Int64 carry7;
-			Int64 carry8;
-			Int64 carry9;
+            int f0 = f.x0;
+            int f1 = f.x1;
+            int f2 = f.x2;
+            int f3 = f.x3;
+            int f4 = f.x4;
+            int f5 = f.x5;
+            int f6 = f.x6;
+            int f7 = f.x7;
+            int f8 = f.x8;
+            int f9 = f.x9;
 
-			carry9 = (h9 + (Int64)(1 << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
-			carry1 = (h1 + (Int64)(1 << 24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
-			carry3 = (h3 + (Int64)(1 << 24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
-			carry5 = (h5 + (Int64)(1 << 24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
-			carry7 = (h7 + (Int64)(1 << 24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
+            var h0 = f0 * 121666L;
+            var h1 = f1 * 121666L;
+            var h2 = f2 * 121666L;
+            var h3 = f3 * 121666L;
+            var h4 = f4 * 121666L;
+            var h5 = f5 * 121666L;
+            var h6 = f6 * 121666L;
+            var h7 = f7 * 121666L;
+            var h8 = f8 * 121666L;
+            var h9 = f9 * 121666L;
 
-			carry0 = (h0 + (Int64)(1 << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
-			carry2 = (h2 + (Int64)(1 << 25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
-			carry4 = (h4 + (Int64)(1 << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
-			carry6 = (h6 + (Int64)(1 << 25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
-			carry8 = (h8 + (Int64)(1 << 25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
+            var carry9 = (h9 + (1 << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
+            var carry1 = (h1 + (1 << 24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
+            var carry3 = (h3 + (1 << 24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
+            var carry5 = (h5 + (1 << 24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
+            var carry7 = (h7 + (1 << 24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
+
+            var carry0 = (h0 + (1 << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
+            var carry2 = (h2 + (1 << 25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
+            var carry4 = (h4 + (1 << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
+            var carry6 = (h6 + (1 << 25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
+            var carry8 = (h8 + (1 << 25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
 
 			h.x0 = (int)h0;
 			h.x1 = (int)h1;

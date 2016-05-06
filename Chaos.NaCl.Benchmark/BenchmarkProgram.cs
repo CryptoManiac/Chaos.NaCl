@@ -147,7 +147,7 @@ namespace Chaos.NaCl.Benchmark
 				        75, 27,0,216, 16,122,7, 89,162,104,101,147,213, 21, 54, 95,
 				        225,253,139,176,105,132, 23,116, 76, 41,176,207,221, 34,157,108,
 				        94, 94, 99, 52, 90,117, 91,220,146,190,239,143,196,176,130,186};
-            Array16<UInt32> state;
+            Array16<uint> state;
             ByteIntegerConverter.Array16LoadLittleEndian32(out state, input, 0);
             for (int i = 0; i < (size + 63) / 64; i++)
             {

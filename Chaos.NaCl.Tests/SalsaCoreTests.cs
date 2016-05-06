@@ -34,9 +34,9 @@ namespace Chaos.NaCl.Tests
 		[TestMethod]
 		public void Zero()
 		{
-			Array16<UInt32> input = new Array16<uint>();
-			Array16<UInt32> output;
-			UInt32[] expected = new UInt32[16];
+			Array16<uint> input = new Array16<uint>();
+			Array16<uint> output;
+            uint[] expected = new uint[16];
 			SalsaCore.Salsa(out output, ref input, 20);
 			Assert.IsTrue(ToArray(output).SequenceEqual(expected));
 		}
@@ -44,10 +44,10 @@ namespace Chaos.NaCl.Tests
 		[TestMethod]
 		public void DoubleRound1()
 		{
-			Array16<UInt32> input = new Array16<uint>();
+			Array16<uint> input = new Array16<uint>();
 			input.x0 = 1;
-			Array16<UInt32> output;
-			UInt32[] expected = new UInt32[16]
+			Array16<uint> output;
+            uint[] expected = new uint[16]
 			{
 				0x8186a22d,0x0040a284,0x82479210,0x06929051,
 				0x08000090,0x02402200,0x00004000,0x00800000,
@@ -72,8 +72,8 @@ namespace Chaos.NaCl.Tests
 				118, 40,152,157,180, 57, 27, 94,107, 42,236, 35, 27,111,114,114,
 				219,236,232,135,111,155,110, 18, 24,232, 95,158,179, 19, 48,202};
 			byte[] actualOutput = new byte[64];
-			Array16<UInt32> inputState;
-			Array16<UInt32> outputState;
+			Array16<uint> inputState;
+			Array16<uint> outputState;
 
 			ByteIntegerConverter.Array16LoadLittleEndian32(out inputState, input, 0);
 			SalsaCore.Salsa(out outputState, ref inputState, 20);
@@ -96,7 +96,7 @@ namespace Chaos.NaCl.Tests
 				123, 11, 68, 86,237, 82, 20,155,133,189,9, 83,167,116,194, 78,
 				122,127,195,185,185,204,188, 90,245,9,183,248,226, 85,245,104};
 			byte[] actualOutput = new byte[64];
-			Array16<UInt32> state;
+			Array16<uint> state;
 			ByteIntegerConverter.Array16LoadLittleEndian32(out state, input, 0);
 			for (int i = 0; i < 1000000; i++)
 			{

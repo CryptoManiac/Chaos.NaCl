@@ -33,16 +33,16 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             FieldElement hr;
             fe_reduce(out hr, ref h);
 
-            Int32 h0 = hr.x0;
-            Int32 h1 = hr.x1;
-            Int32 h2 = hr.x2;
-            Int32 h3 = hr.x3;
-            Int32 h4 = hr.x4;
-            Int32 h5 = hr.x5;
-            Int32 h6 = hr.x6;
-            Int32 h7 = hr.x7;
-            Int32 h8 = hr.x8;
-            Int32 h9 = hr.x9;
+            int h0 = hr.x0;
+            int h1 = hr.x1;
+            int h2 = hr.x2;
+            int h3 = hr.x3;
+            int h4 = hr.x4;
+            int h5 = hr.x5;
+            int h6 = hr.x6;
+            int h7 = hr.x7;
+            int h8 = hr.x8;
+            int h9 = hr.x9;
 
             /*
             Goal: Output h0+...+2^255 h10-2^255 q, which is between 0 and 2^255-20.
@@ -89,29 +89,20 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 
         internal static void fe_reduce(out FieldElement hr, ref FieldElement h)
         {
-            Int32 h0 = h.x0;
-            Int32 h1 = h.x1;
-            Int32 h2 = h.x2;
-            Int32 h3 = h.x3;
-            Int32 h4 = h.x4;
-            Int32 h5 = h.x5;
-            Int32 h6 = h.x6;
-            Int32 h7 = h.x7;
-            Int32 h8 = h.x8;
-            Int32 h9 = h.x9;
-            Int32 q;
-            Int32 carry0;
-            Int32 carry1;
-            Int32 carry2;
-            Int32 carry3;
-            Int32 carry4;
-            Int32 carry5;
-            Int32 carry6;
-            Int32 carry7;
-            Int32 carry8;
-            Int32 carry9;
+            int h0 = h.x0;
+            int h1 = h.x1;
+            int h2 = h.x2;
+            int h3 = h.x3;
+            int h4 = h.x4;
+            int h5 = h.x5;
+            int h6 = h.x6;
+            int h7 = h.x7;
+            int h8 = h.x8;
+            int h9 = h.x9;
 
-            q = (19 * h9 + (((Int32)1) << 24)) >> 25;
+            int q;
+
+            q = (19 * h9 + (1 << 24)) >> 25;
             q = (h0 + q) >> 26;
             q = (h1 + q) >> 25;
             q = (h2 + q) >> 26;
@@ -127,16 +118,16 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             h0 += 19 * q;
             /* Goal: Output h-2^255 q, which is between 0 and 2^255-20. */
 
-            carry0 = h0 >> 26; h1 += carry0; h0 -= carry0 << 26;
-            carry1 = h1 >> 25; h2 += carry1; h1 -= carry1 << 25;
-            carry2 = h2 >> 26; h3 += carry2; h2 -= carry2 << 26;
-            carry3 = h3 >> 25; h4 += carry3; h3 -= carry3 << 25;
-            carry4 = h4 >> 26; h5 += carry4; h4 -= carry4 << 26;
-            carry5 = h5 >> 25; h6 += carry5; h5 -= carry5 << 25;
-            carry6 = h6 >> 26; h7 += carry6; h6 -= carry6 << 26;
-            carry7 = h7 >> 25; h8 += carry7; h7 -= carry7 << 25;
-            carry8 = h8 >> 26; h9 += carry8; h8 -= carry8 << 26;
-            carry9 = h9 >> 25; h9 -= carry9 << 25;
+            var carry0 = h0 >> 26; h1 += carry0; h0 -= carry0 << 26;
+            var carry1 = h1 >> 25; h2 += carry1; h1 -= carry1 << 25;
+            var carry2 = h2 >> 26; h3 += carry2; h2 -= carry2 << 26;
+            var carry3 = h3 >> 25; h4 += carry3; h3 -= carry3 << 25;
+            var carry4 = h4 >> 26; h5 += carry4; h4 -= carry4 << 26;
+            var carry5 = h5 >> 25; h6 += carry5; h5 -= carry5 << 25;
+            var carry6 = h6 >> 26; h7 += carry6; h6 -= carry6 << 26;
+            var carry7 = h7 >> 25; h8 += carry7; h7 -= carry7 << 25;
+            var carry8 = h8 >> 26; h9 += carry8; h8 -= carry8 << 26;
+            var carry9 = h9 >> 25; h9 -= carry9 << 25;
             /* h10 = carry9 */
 
             hr.x0 = h0;

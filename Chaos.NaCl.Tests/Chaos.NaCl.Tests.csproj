@@ -58,7 +58,6 @@
     <Compile Include="CryptoBytesTest.cs" />
     <Compile Include="Ed25519Tests.cs" />
     <Compile Include="Ed25519TestVectors.cs" />
-    <Compile Include="InternalAssertTests.cs" />
     <Compile Include="MontgomeryCurve25519TestVectors.cs" />
     <Compile Include="Poly1305Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

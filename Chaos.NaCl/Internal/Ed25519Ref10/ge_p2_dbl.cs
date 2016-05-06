@@ -12,32 +12,6 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 		{
 			FieldElement t0;
 
-			/* qhasm: enter ge_p2_dbl */
-
-			/* qhasm: fe X1 */
-
-			/* qhasm: fe Y1 */
-
-			/* qhasm: fe Z1 */
-
-			/* qhasm: fe A */
-
-			/* qhasm: fe AA */
-
-			/* qhasm: fe XX */
-
-			/* qhasm: fe YY */
-
-			/* qhasm: fe B */
-
-			/* qhasm: fe X3 */
-
-			/* qhasm: fe Y3 */
-
-			/* qhasm: fe Z3 */
-
-			/* qhasm: fe T3 */
-
 			/* qhasm: XX=X1^2 */
 			/* asm 1: fe_sq(>XX=fe#1,<X1=fe#11); */
 			/* asm 2: fe_sq(>XX=r.X,<X1=p.X); */

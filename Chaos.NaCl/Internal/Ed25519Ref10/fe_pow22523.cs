@@ -6,58 +6,8 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 	{
 		internal static void fe_pow22523(out FieldElement result, ref FieldElement z)
 		{
-			FieldElement t0;
-			FieldElement t1;
-			FieldElement t2;
+			FieldElement t0, t1, t2;
 			int i;
-
-			/* qhasm: fe z1 */
-
-			/* qhasm: fe z2 */
-
-			/* qhasm: fe z8 */
-
-			/* qhasm: fe z9 */
-
-			/* qhasm: fe z11 */
-
-			/* qhasm: fe z22 */
-
-			/* qhasm: fe z_5_0 */
-
-			/* qhasm: fe z_10_5 */
-
-			/* qhasm: fe z_10_0 */
-
-			/* qhasm: fe z_20_10 */
-
-			/* qhasm: fe z_20_0 */
-
-			/* qhasm: fe z_40_20 */
-
-			/* qhasm: fe z_40_0 */
-
-			/* qhasm: fe z_50_10 */
-
-			/* qhasm: fe z_50_0 */
-
-			/* qhasm: fe z_100_50 */
-
-			/* qhasm: fe z_100_0 */
-
-			/* qhasm: fe z_200_100 */
-
-			/* qhasm: fe z_200_0 */
-
-			/* qhasm: fe z_250_50 */
-
-			/* qhasm: fe z_250_0 */
-
-			/* qhasm: fe z_252_2 */
-
-			/* qhasm: fe z_252_3 */
-
-			/* qhasm: enter pow22523 */
 
 			/* qhasm: z2 = z1^2^1 */
 			/* asm 1: fe_sq(>z2=fe#1,<z1=fe#11); for (i = 1;i < 1;++i) fe_sq(>z2=fe#1,>z2=fe#1); */

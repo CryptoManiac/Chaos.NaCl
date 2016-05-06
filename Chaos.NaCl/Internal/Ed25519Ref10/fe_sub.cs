@@ -18,36 +18,39 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 
 		internal static void fe_sub(out FieldElement h, ref FieldElement f, ref FieldElement g)
 		{
-			Int32 f0 = f.x0;
-			Int32 f1 = f.x1;
-			Int32 f2 = f.x2;
-			Int32 f3 = f.x3;
-			Int32 f4 = f.x4;
-			Int32 f5 = f.x5;
-			Int32 f6 = f.x6;
-			Int32 f7 = f.x7;
-			Int32 f8 = f.x8;
-			Int32 f9 = f.x9;
-			Int32 g0 = g.x0;
-			Int32 g1 = g.x1;
-			Int32 g2 = g.x2;
-			Int32 g3 = g.x3;
-			Int32 g4 = g.x4;
-			Int32 g5 = g.x5;
-			Int32 g6 = g.x6;
-			Int32 g7 = g.x7;
-			Int32 g8 = g.x8;
-			Int32 g9 = g.x9;
-			Int32 h0 = f0 - g0;
-			Int32 h1 = f1 - g1;
-			Int32 h2 = f2 - g2;
-			Int32 h3 = f3 - g3;
-			Int32 h4 = f4 - g4;
-			Int32 h5 = f5 - g5;
-			Int32 h6 = f6 - g6;
-			Int32 h7 = f7 - g7;
-			Int32 h8 = f8 - g8;
-			Int32 h9 = f9 - g9;
+            int f0 = f.x0;
+            int f1 = f.x1;
+            int f2 = f.x2;
+            int f3 = f.x3;
+            int f4 = f.x4;
+            int f5 = f.x5;
+            int f6 = f.x6;
+            int f7 = f.x7;
+            int f8 = f.x8;
+            int f9 = f.x9;
+
+            int g0 = g.x0;
+            int g1 = g.x1;
+            int g2 = g.x2;
+            int g3 = g.x3;
+            int g4 = g.x4;
+            int g5 = g.x5;
+            int g6 = g.x6;
+            int g7 = g.x7;
+            int g8 = g.x8;
+            int g9 = g.x9;
+
+            int h0 = f0 - g0;
+            int h1 = f1 - g1;
+            int h2 = f2 - g2;
+            int h3 = f3 - g3;
+            int h4 = f4 - g4;
+            int h5 = f5 - g5;
+            int h6 = f6 - g6;
+            int h7 = f7 - g7;
+            int h8 = f8 - g8;
+            int h9 = f9 - g9;
+
 			h.x0 = h0;
 			h.x1 = h1;
 			h.x2 = h2;

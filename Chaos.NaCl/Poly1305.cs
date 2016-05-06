@@ -27,7 +27,7 @@ namespace Chaos.NaCl
                 throw new ArgumentException("Invalid key size", "key");
 
             var result = new byte[16];
-            Array8<UInt32> internalKey;
+            Array8<uint> internalKey;
             ByteIntegerConverter.Array8LoadLittleEndian32(out internalKey, key, 0);
             Poly1305Donna.poly1305_auth(result, 0, message, 0, message.Length, ref internalKey);
             return result;
@@ -47,7 +47,7 @@ namespace Chaos.NaCl
             if (signature.Count != 16)
                 throw new ArgumentException("Invalid signature size", "signature");
 
-            Array8<UInt32> internalKey;
+            Array8<uint> internalKey;
             ByteIntegerConverter.Array8LoadLittleEndian32(out internalKey, key.Array, key.Offset);
             Poly1305Donna.poly1305_auth(signature.Array, signature.Offset, message.Array, message.Offset, message.Count, ref internalKey);
         }
@@ -67,7 +67,7 @@ namespace Chaos.NaCl
                 throw new ArgumentException("Invalid key size", "key");
 
             var tempBytes = new byte[16];//todo: remove allocation
-            Array8<UInt32> internalKey;
+            Array8<uint> internalKey;
             ByteIntegerConverter.Array8LoadLittleEndian32(out internalKey, key, 0);
             Poly1305Donna.poly1305_auth(tempBytes, 0, message, 0, message.Length, ref internalKey);
             return CryptoBytes.ConstantTimeEquals(tempBytes, signature);
@@ -88,7 +88,7 @@ namespace Chaos.NaCl
                 throw new ArgumentException("Invalid signature size", "signature");
 
             var tempBytes = new byte[16];//todo: remove allocation
-            Array8<UInt32> internalKey;
+            Array8<uint> internalKey;
             ByteIntegerConverter.Array8LoadLittleEndian32(out internalKey, key.Array, key.Offset);
             Poly1305Donna.poly1305_auth(tempBytes, 0, message.Array, message.Offset, message.Count, ref internalKey);
             return CryptoBytes.ConstantTimeEquals(new ArraySegment<byte>(tempBytes), signature);

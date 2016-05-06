@@ -10,7 +10,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             byte ub = b;
             byte uc = c;
             byte x = (byte)(ub ^ uc); /* 0: yes; 1..255: no */
-            UInt32 y = x; /* 0: yes; 1..255: no */
+            uint y = x; /* 0: yes; 1..255: no */
             unchecked { y -= 1; } /* 4294967295: yes; 0..254: no */
             y >>= 31; /* 1: yes; 0: no */
             return (byte)y;
@@ -18,7 +18,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 
         static byte negative(sbyte b)
         {
-            ulong x = unchecked((ulong)(long)b); /* 18446744073709551361..18446744073709551615: yes; 0..255: no */
+            var x = unchecked((ulong)b); /* 18446744073709551361..18446744073709551615: yes; 0..255: no */
             x >>= 63; /* 1: yes; 0: no */
             return (byte)x;
         }
@@ -33,8 +33,8 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
         static void select(out GroupElementPreComp t, int pos, sbyte b)
         {
             GroupElementPreComp minust;
-            byte bnegative = negative(b);
-            byte babs = (byte)(b - (((-bnegative) & b) << 1));
+            var bnegative = negative(b);
+            var babs = (byte)(b - (((-bnegative) & b) << 1));
 
             ge_precomp_0(out t);
             var table = LookupTables.Base[pos];
@@ -64,14 +64,14 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
         public static void ge_scalarmult_base(out GroupElementP3 h, byte[] a, int offset)
         {
             // todo: Perhaps remove this allocation
-            sbyte[] e = new sbyte[64];
+            var e = new sbyte[64];
             sbyte carry;
+
             GroupElementP1P1 r;
             GroupElementP2 s;
             GroupElementPreComp t;
-            int i;
 
-            for (i = 0; i < 32; ++i)
+            for (int i = 0; i < 32; ++i)
             {
                 e[2 * i + 0] = (sbyte)((a[offset + i] >> 0) & 15);
                 e[2 * i + 1] = (sbyte)((a[offset + i] >> 4) & 15);
@@ -80,7 +80,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             /* e[63] is between 0 and 7 */
 
             carry = 0;
-            for (i = 0; i < 63; ++i)
+            for (int i = 0; i < 63; ++i)
             {
                 e[i] += carry;
                 carry = (sbyte)(e[i] + 8);
@@ -91,7 +91,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             /* each e[i] is between -8 and 8 */
 
             ge_p3_0(out h);
-            for (i = 1; i < 64; i += 2)
+            for (int i = 1; i < 64; i += 2)
             {
                 select(out t, i / 2, e[i]);
                 ge_madd(out r, ref h, ref t); ge_p1p1_to_p3(out h, ref r);
@@ -102,7 +102,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             ge_p2_dbl(out r, ref s); ge_p1p1_to_p2(out s, ref r);
             ge_p2_dbl(out r, ref s); ge_p1p1_to_p3(out h, ref r);
 
-            for (i = 0; i < 64; i += 2)
+            for (int i = 0; i < 64; i += 2)
             {
                 select(out t, i / 2, e[i]);
                 ge_madd(out r, ref h, ref t); ge_p1p1_to_p3(out h, ref r);

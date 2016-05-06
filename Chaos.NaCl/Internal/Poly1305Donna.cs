@@ -8,18 +8,18 @@ namespace Chaos.NaCl.Internal
         // written by floodyberry (Andrew M.)
         // original license: MIT or PUBLIC DOMAIN
         // https://github.com/floodyberry/poly1305-donna/blob/master/poly1305-donna-unrolled.c
-        public static void poly1305_auth(byte[] output, int outputOffset, byte[] m, int mStart, int mLength, ref Array8<UInt32> key)
+        public static void poly1305_auth(byte[] output, int outputOffset, byte[] m, int mStart, int mLength, ref Array8<uint> key)
         {
-            UInt32 t0, t1, t2, t3;
-            UInt32 h0, h1, h2, h3, h4;
-            UInt32 r0, r1, r2, r3, r4;
-            UInt32 s1, s2, s3, s4;
-            UInt32 b, nb;
+            uint t0, t1, t2, t3;
+            uint h0, h1, h2, h3, h4;
+            uint r0, r1, r2, r3, r4;
+            uint s1, s2, s3, s4;
+            uint b, nb;
             int j;
-            UInt64 tt0, tt1, tt2, tt3, tt4;
-            UInt64 f0, f1, f2, f3;
-            UInt32 g0, g1, g2, g3, g4;
-            UInt64 c;
+            ulong tt0, tt1, tt2, tt3, tt4;
+            ulong f0, f1, f2, f3;
+            uint g0, g1, g2, g3, g4;
+            ulong c;
 
             /* clamp key */
             t0 = key.x0;
@@ -61,9 +61,9 @@ namespace Chaos.NaCl.Internal
 
             //todo: looks like these can be simplified a bit
             h0 += t0 & 0x3ffffff;
-            h1 += (uint)(((((UInt64)t1 << 32) | t0) >> 26) & 0x3ffffff);
-            h2 += (uint)(((((UInt64)t2 << 32) | t1) >> 20) & 0x3ffffff);
-            h3 += (uint)(((((UInt64)t3 << 32) | t2) >> 14) & 0x3ffffff);
+            h1 += (uint)(((((ulong)t1 << 32) | t0) >> 26) & 0x3ffffff);
+            h2 += (uint)(((((ulong)t2 << 32) | t1) >> 20) & 0x3ffffff);
+            h3 += (uint)(((((ulong)t3 << 32) | t2) >> 14) & 0x3ffffff);
             h4 += (t3 >> 8) | (1 << 24);
 
 
@@ -76,11 +76,11 @@ namespace Chaos.NaCl.Internal
 
             unchecked
             {
-                h0 = (UInt32)tt0 & 0x3ffffff; c = (tt0 >> 26);
-                tt1 += c; h1 = (UInt32)tt1 & 0x3ffffff; b = (UInt32)(tt1 >> 26);
-                tt2 += b; h2 = (UInt32)tt2 & 0x3ffffff; b = (UInt32)(tt2 >> 26);
-                tt3 += b; h3 = (UInt32)tt3 & 0x3ffffff; b = (UInt32)(tt3 >> 26);
-                tt4 += b; h4 = (UInt32)tt4 & 0x3ffffff; b = (UInt32)(tt4 >> 26);
+                h0 = (uint)tt0 & 0x3ffffff; c = (tt0 >> 26);
+                tt1 += c; h1 = (uint)tt1 & 0x3ffffff; b = (uint)(tt1 >> 26);
+                tt2 += b; h2 = (uint)tt2 & 0x3ffffff; b = (uint)(tt2 >> 26);
+                tt3 += b; h3 = (uint)tt3 & 0x3ffffff; b = (uint)(tt3 >> 26);
+                tt4 += b; h4 = (uint)tt4 & 0x3ffffff; b = (uint)(tt4 >> 26);
             }
             h0 += b * 5;
 
@@ -108,9 +108,9 @@ namespace Chaos.NaCl.Internal
             CryptoBytes.Wipe(mp);
 
             h0 += t0 & 0x3ffffff;
-            h1 += (uint)(((((UInt64)t1 << 32) | t0) >> 26) & 0x3ffffff);
-            h2 += (uint)(((((UInt64)t2 << 32) | t1) >> 20) & 0x3ffffff);
-            h3 += (uint)(((((UInt64)t3 << 32) | t2) >> 14) & 0x3ffffff);
+            h1 += (uint)(((((ulong)t1 << 32) | t0) >> 26) & 0x3ffffff);
+            h2 += (uint)(((((ulong)t2 << 32) | t1) >> 20) & 0x3ffffff);
+            h3 += (uint)(((((ulong)t3 << 32) | t2) >> 14) & 0x3ffffff);
             h4 += t3 >> 8;
 
             goto poly1305_donna_mul;
@@ -137,10 +137,10 @@ namespace Chaos.NaCl.Internal
             h3 = (h3 & nb) | (g3 & b);
             h4 = (h4 & nb) | (g4 & b);
 
-            f0 = ((h0) | (h1 << 26)) + (UInt64)key.x4;
-            f1 = ((h1 >> 6) | (h2 << 20)) + (UInt64)key.x5;
-            f2 = ((h2 >> 12) | (h3 << 14)) + (UInt64)key.x6;
-            f3 = ((h3 >> 18) | (h4 << 8)) + (UInt64)key.x7;
+            f0 = ((h0) | (h1 << 26)) + (ulong)key.x4;
+            f1 = ((h1 >> 6) | (h2 << 20)) + (ulong)key.x5;
+            f2 = ((h2 >> 12) | (h3 << 14)) + (ulong)key.x6;
+            f3 = ((h3 >> 18) | (h4 << 8)) + (ulong)key.x7;
 
             unchecked
             {

@@ -9,8 +9,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 			byte[] n, int noffset,
 			byte[] p, int poffset)
 		{
-			FieldElement p0;
-			FieldElement q0;
+			FieldElement p0, q0;
 			FieldOperations.fe_frombytes2(out p0, p, poffset);
 			scalarmult(out q0, n, noffset, ref p0);
 			FieldOperations.fe_tobytes(q, qoffset, ref q0);
@@ -22,19 +21,11 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 			ref FieldElement p)
 		{
 			byte[] e = new byte[32];//ToDo: remove allocation
-			UInt32 i;
-			FieldElement x1;
-			FieldElement x2;
-			FieldElement z2;
-			FieldElement x3;
-			FieldElement z3;
-			FieldElement tmp0;
-			FieldElement tmp1;
-			int pos;
-			UInt32 swap;
-			UInt32 b;
+			FieldElement x1, x2, x3;
+			FieldElement z2, z3;
+			FieldElement tmp0, tmp1;
 
-			for (i = 0; i < 32; ++i)
+			for (int i = 0; i < 32; ++i)
 				e[i] = n[noffset + i];
 		    ScalarOperations.sc_clamp(e, 0);
 			x1 = p;
@@ -43,58 +34,15 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 			x3 = x1;
 			FieldOperations.fe_1(out z3);
 
-			swap = 0;
-			for (pos = 254; pos >= 0; --pos)
+			uint swap = 0;
+			for (int pos = 254; pos >= 0; --pos)
 			{
-				b = (uint)(e[pos / 8] >> (pos & 7));
+				uint b = (uint)(e[pos / 8] >> (pos & 7));
 				b &= 1;
 				swap ^= b;
 				FieldOperations.fe_cswap(ref x2, ref x3, swap);
 				FieldOperations.fe_cswap(ref z2, ref z3, swap);
 				swap = b;
-				/* qhasm: fe X2 */
-
-				/* qhasm: fe Z2 */
-
-				/* qhasm: fe X3 */
-
-				/* qhasm: fe Z3 */
-
-				/* qhasm: fe X4 */
-
-				/* qhasm: fe Z4 */
-
-				/* qhasm: fe X5 */
-
-				/* qhasm: fe Z5 */
-
-				/* qhasm: fe A */
-
-				/* qhasm: fe B */
-
-				/* qhasm: fe C */
-
-				/* qhasm: fe D */
-
-				/* qhasm: fe E */
-
-				/* qhasm: fe AA */
-
-				/* qhasm: fe BB */
-
-				/* qhasm: fe DA */
-
-				/* qhasm: fe CB */
-
-				/* qhasm: fe t0 */
-
-				/* qhasm: fe t1 */
-
-				/* qhasm: fe t2 */
-
-				/* qhasm: fe t3 */
-
-				/* qhasm: fe t4 */
 
 				/* qhasm: enter ladder */
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Chaos.NaCl.Internal;
 using Chaos.NaCl.Internal.Salsa;
 
@@ -7,36 +7,25 @@ namespace Chaos.NaCl
 {
     public static class XSalsa20Poly1305
     {
-        public static readonly int KeySizeInBytes = 32;
-        public static readonly int NonceSizeInBytes = 24;
-        public static readonly int MacSizeInBytes = 16;
+        public const int KeySize = 32;
+        public const int NonceSize = 24;
+        public const int MacSize = 16;
 
         public static byte[] Encrypt(byte[] message, byte[] key, byte[] nonce)
         {
-            if (message == null)
-                throw new ArgumentNullException("message");
-            if (key == null)
-                throw new ArgumentNullException("key");
-            if (nonce == null)
-                throw new ArgumentNullException("nonce");
-            if (key.Length != KeySizeInBytes)
-                throw new ArgumentException("key.Length != 32");
-            if (nonce.Length != NonceSizeInBytes)
-                throw new ArgumentException("nonce.Length != 24");
+            Contract.Requires<ArgumentNullException>(message != null && key != null && nonce != null);
+            Contract.Requires<ArgumentException>(key.Length == KeySize && nonce.Length == NonceSize);
 
-            var ciphertext = new byte[message.Length + MacSizeInBytes];
+            var ciphertext = new byte[message.Length + MacSize];
             EncryptInternal(ciphertext, 0, message, 0, message.Length, key, 0, nonce, 0);
             return ciphertext;
         }
 
         public static void Encrypt(ArraySegment<byte> ciphertext, ArraySegment<byte> message, ArraySegment<byte> key, ArraySegment<byte> nonce)
         {
-            if (key.Count != KeySizeInBytes)
-                throw new ArgumentException("key.Length != 32");
-            if (nonce.Count != NonceSizeInBytes)
-                throw new ArgumentException("nonce.Length != 24");
-            if (ciphertext.Count != message.Count + MacSizeInBytes)
-                throw new ArgumentException("ciphertext.Count != message.Count + 16");
+            Contract.Requires<ArgumentException>(key.Count == KeySize && nonce.Count == NonceSize);
+            Contract.Requires<ArgumentException>(ciphertext.Count == (message.Count + MacSize));
+
             EncryptInternal(ciphertext.Array, ciphertext.Offset, message.Array, message.Offset, message.Count, key.Array, key.Offset, nonce.Array, nonce.Offset);
         }
 
@@ -46,20 +35,12 @@ namespace Chaos.NaCl
         /// <returns>Plaintext if MAC validation succeeds, null if the data is invalid.</returns>
         public static byte[] TryDecrypt(byte[] ciphertext, byte[] key, byte[] nonce)
         {
-            if (ciphertext == null)
-                throw new ArgumentNullException("ciphertext");
-            if (key == null)
-                throw new ArgumentNullException("key");
-            if (nonce == null)
-                throw new ArgumentNullException("nonce");
-            if (key.Length != KeySizeInBytes)
-                throw new ArgumentException("key.Length != 32");
-            if (nonce.Length != NonceSizeInBytes)
-                throw new ArgumentException("nonce.Length != 24");
+            Contract.Requires<ArgumentNullException>(ciphertext != null && key != null && nonce != null);
+            Contract.Requires<ArgumentException>(key.Length == KeySize && nonce.Length == NonceSize);
 
-            if (ciphertext.Length < MacSizeInBytes)
+            if (ciphertext.Length < MacSize)
                 return null;
-            var plaintext = new byte[ciphertext.Length - MacSizeInBytes];
+            var plaintext = new byte[ciphertext.Length - MacSize];
             bool success = DecryptInternal(plaintext, 0, ciphertext, 0, ciphertext.Length, key, 0, nonce, 0);
             if (success)
                 return plaintext;
@@ -77,17 +58,13 @@ namespace Chaos.NaCl
         /// <returns>true if ciphertext is authentic, false otherwise</returns>
         public static bool TryDecrypt(ArraySegment<byte> message, ArraySegment<byte> ciphertext, ArraySegment<byte> key, ArraySegment<byte> nonce)
         {
-            if (key.Count != KeySizeInBytes)
-                throw new ArgumentException("key.Length != 32");
-            if (nonce.Count != NonceSizeInBytes)
-                throw new ArgumentException("nonce.Length != 24");
-            if (ciphertext.Count != message.Count + MacSizeInBytes)
-                throw new ArgumentException("ciphertext.Count != message.Count + 16");
+            Contract.Requires<ArgumentException>(key.Count == KeySize && nonce.Count == NonceSize);
+            Contract.Requires<ArgumentException>(ciphertext.Count == (message.Count + MacSize));
 
             return DecryptInternal(message.Array, message.Offset, ciphertext.Array, ciphertext.Offset, ciphertext.Count, key.Array, key.Offset, nonce.Array, nonce.Offset);
         }
 
-        private static void PrepareInternalKey(out Array16<UInt32> internalKey, byte[] key, int keyOffset, byte[] nonce, int nonceOffset)
+        private static void PrepareInternalKey(out Array16<uint> internalKey, byte[] key, int keyOffset, byte[] nonce, int nonceOffset)
         {
             internalKey.x0 = Salsa20.SalsaConst0;
             internalKey.x1 = ByteIntegerConverter.LoadLittleEndian32(key, keyOffset + 0);
@@ -131,11 +108,11 @@ namespace Chaos.NaCl
 
         private static bool DecryptInternal(byte[] plaintext, int plaintextOffset, byte[] ciphertext, int ciphertextOffset, int ciphertextLength, byte[] key, int keyOffset, byte[] nonce, int nonceOffset)
         {
-            int plaintextLength = ciphertextLength - MacSizeInBytes;
-            Array16<UInt32> internalKey;
+            int plaintextLength = ciphertextLength - MacSize;
+            Array16<uint> internalKey;
             PrepareInternalKey(out internalKey, key, keyOffset, nonce, nonceOffset);
 
-            Array16<UInt32> temp;
+            Array16<uint> temp;
             var tempBytes = new byte[64];//todo: remove allocation
 
             // first iteration
@@ -143,7 +120,7 @@ namespace Chaos.NaCl
                 SalsaCore.Salsa(out temp, ref internalKey, 20);
 
                 //first half is for Poly1305
-                Array8<UInt32> poly1305Key;
+                Array8<uint> poly1305Key;
                 poly1305Key.x0 = temp.x0;
                 poly1305Key.x1 = temp.x1;
                 poly1305Key.x2 = temp.x2;
@@ -155,7 +132,7 @@ namespace Chaos.NaCl
 
                 // compute MAC
                 Poly1305Donna.poly1305_auth(tempBytes, 0, ciphertext, ciphertextOffset + 16, plaintextLength, ref poly1305Key);
-                if (!CryptoBytes.ConstantTimeEquals(tempBytes, 0, ciphertext, ciphertextOffset, MacSizeInBytes))
+                if (!CryptoBytes.ConstantTimeEquals(tempBytes, 0, ciphertext, ciphertextOffset, MacSize))
                 {
                     Array.Clear(plaintext, plaintextOffset, plaintextLength);
                     return false;
@@ -172,7 +149,7 @@ namespace Chaos.NaCl
                 ByteIntegerConverter.StoreLittleEndian32(tempBytes, 28, temp.x15);
                 int count = Math.Min(32, plaintextLength);
                 for (int i = 0; i < count; i++)
-                    plaintext[plaintextOffset + i] = (byte)(ciphertext[MacSizeInBytes + ciphertextOffset + i] ^ tempBytes[i]);
+                    plaintext[plaintextOffset + i] = (byte)(ciphertext[MacSize + ciphertextOffset + i] ^ tempBytes[i]);
             }
 
             // later iterations
@@ -192,12 +169,12 @@ namespace Chaos.NaCl
 
         private static void EncryptInternal(byte[] ciphertext, int ciphertextOffset, byte[] message, int messageOffset, int messageLength, byte[] key, int keyOffset, byte[] nonce, int nonceOffset)
         {
-            Array16<UInt32> internalKey;
+            Array16<uint> internalKey;
             PrepareInternalKey(out internalKey, key, keyOffset, nonce, nonceOffset);
 
-            Array16<UInt32> temp;
+            Array16<uint> temp;
             var tempBytes = new byte[64];//todo: remove allocation
-            Array8<UInt32> poly1305Key;
+            Array8<uint> poly1305Key;
 
             // first iteration
             {
