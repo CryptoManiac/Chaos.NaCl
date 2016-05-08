@@ -16,22 +16,13 @@ namespace Chaos.NaCl
 
         public static byte[] GetPublicKey(byte[] privateKey)
         {
-            if (privateKey == null)
-                throw new ArgumentNullException("privateKey");
-            if (privateKey.Length != PrivateKeySize)
-                throw new ArgumentException("privateKey.Length must be 32");
+            Contract.Requires<ArgumentNullException>(privateKey != null);
+            Contract.Requires<ArgumentException>(privateKey.Length == PrivateKeySize);
+
             var publicKey = new byte[32];
             GetPublicKey(new ArraySegment<byte>(publicKey), new ArraySegment<byte>(privateKey));
             return publicKey;
         }
-
-        static readonly byte[] _basePoint = new byte[32]
-		{
-			9, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0 ,0, 0, 0, 0, 0,
-			0, 0, 0 ,0, 0, 0, 0, 0,
-			0, 0, 0 ,0, 0, 0, 0, 0
-		};
 
         public static void GetPublicKey(ArraySegment<byte> publicKey, ArraySegment<byte> privateKey)
         {
